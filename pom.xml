@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.odionwolf</groupId>
-    <artifactId>weather</artifactId>
+    <artifactId>Realisticweather</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Weather</name>
+    <name>RealisticWeather</name>
 
-    <description>Adds insane weather to minecraft</description>
+    <description>Adds realistic weather to minecraft</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

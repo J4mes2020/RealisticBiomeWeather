@@ -1,7 +1,7 @@
-name: Weather
+name: RealisticWeather
 version: ${project.version}
-main: dev.odionwolf.weather.Weather
+main: dev.odionwolf.realisticweather.RealisticWeather
 api-version: 1.16
 authors: [ Odionwolf ]
-description: Adds insane weather to minecraft
+description: Adds realistic weather to minecraft
 website: odionwolf.dev
