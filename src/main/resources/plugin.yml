@@ -1,0 +1,7 @@
+name: Weather
+version: ${project.version}
+main: dev.odionwolf.weather.Weather
+api-version: 1.16
+authors: [ Odionwolf ]
+description: Adds insane weather to minecraft
+website: odionwolf.dev
