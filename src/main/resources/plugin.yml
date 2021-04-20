@@ -5,3 +5,7 @@ api-version: 1.16
 authors: [ Odionwolf ]
 description: Adds realistic weather to minecraft
 website: odionwolf.dev
+
+commands:
+  realisticweather:
+    description: commands to control the weather

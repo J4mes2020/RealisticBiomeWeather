@@ -1,7 +1,7 @@
 package dev.odionwolf.realisticweather.checks;
 
 import dev.odionwolf.realisticweather.RealisticWeather;
-import org.bukkit.World;
+import dev.odionwolf.realisticweather.wind.WindGenerator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,12 +14,16 @@ import java.util.ArrayList;
 
 public class WeatherCheck implements Listener {
 
-    public WeatherCheck(RealisticWeather realisticWeather) {
+    private final WindGenerator windGenerator;
+    private RealisticWeather realisticWeather;
+
+    public WeatherCheck(RealisticWeather realisticWeather, WindGenerator windGenerator) {
         realisticWeather.getServer().getPluginManager().registerEvents(this, realisticWeather);
+        this.windGenerator = windGenerator;
+        this.realisticWeather = realisticWeather;
     }
 
     public ArrayList<Player> playerInWorld = new ArrayList<>();
-
 
 
     @EventHandler
@@ -44,18 +48,27 @@ public class WeatherCheck implements Listener {
     }
 
     public void sunny(Player player) {
+        if (realisticWeather.weather.equalsIgnoreCase("rain") || realisticWeather.weather.isEmpty()) {
+            realisticWeather.weather = "";
+        }
+        realisticWeather.weather = "sun";
         player.removePotionEffect(PotionEffectType.SLOW);
         player.removePotionEffect(PotionEffectType.UNLUCK);
         player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, 1000000, 0, true, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 1000000, 0, true, false, false));
-
+        windGenerator.onPush(player);
     }
 
     public void rainy(Player player) {
+        if (realisticWeather.weather.equalsIgnoreCase("sun") || realisticWeather.weather.isEmpty()) {
+            realisticWeather.weather = "";
+        }
+        realisticWeather.weather = "rain";
         player.removePotionEffect(PotionEffectType.LUCK);
         player.removePotionEffect(PotionEffectType.ABSORPTION);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0, true, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.UNLUCK, 1000000, 0, true, false, false));
+        windGenerator.onPush(player);
     }
 
 }

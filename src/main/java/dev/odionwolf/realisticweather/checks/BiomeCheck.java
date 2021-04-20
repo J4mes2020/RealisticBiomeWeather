@@ -13,9 +13,10 @@ public class BiomeCheck implements Listener {
 
     private final WeatherCheck weatherCheck;
 
-    public BiomeCheck(WeatherCheck weatherCheck, RealisticWeather realisticWeather) {
-        this.weatherCheck = weatherCheck;
+    public BiomeCheck(RealisticWeather realisticWeather, WeatherCheck weatherCheck) {
         realisticWeather.getServer().getPluginManager().registerEvents(this, realisticWeather);
+        this.weatherCheck = weatherCheck;
+
     }
 
     @EventHandler
@@ -39,6 +40,7 @@ public class BiomeCheck implements Listener {
                     player.removePotionEffect(effect.getType());
                 }
                 break;
+                //add more biomes
         }
     }
 
