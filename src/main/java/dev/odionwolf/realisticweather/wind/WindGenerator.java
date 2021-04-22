@@ -26,55 +26,7 @@ public class WindGenerator {
         return shuffle.get(0);
     }
     public void onPush(Player player) {
+        //Find a way to add wind which is calm, using velocity 0.02
         World world = player.getWorld();
-        BukkitScheduler scheduler = realisticWeather.getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(realisticWeather, () -> {
-            switch (getWindDirection()) {
-                case "N":
-                    scheduler.scheduleSyncRepeatingTask(realisticWeather, () -> {
-                        for (Entity entities : world.getEntities()) {
-                            if (realisticWeather.weather.equalsIgnoreCase("sun")) {
-                                entities.setVelocity(new Vector(0, 0, -realisticWeather.windPushPower / 2));
-                            } else {
-                                entities.setVelocity(new Vector(0, 0, -realisticWeather.windPushPower));
-                            }
-                        }
-                    }, 40, realisticWeather.windSpeed);
-                    break;
-                case "E":
-                    scheduler.scheduleSyncRepeatingTask(realisticWeather, () -> {
-                        for (Entity entities : world.getEntities()) {
-                            if (realisticWeather.weather.equalsIgnoreCase("sun")) {
-                                entities.setVelocity(new Vector(-realisticWeather.windPushPower / 2, 0, 0));
-                            } else {
-                                entities.setVelocity(new Vector(-realisticWeather.windPushPower, 0, 0));
-                            }
-                        }
-                    }, 40, realisticWeather.windSpeed);
-                    break;
-                case "S":
-                    scheduler.scheduleSyncRepeatingTask(realisticWeather, () -> {
-                        for (Entity entities : world.getEntities()) {
-                            if (realisticWeather.weather.equalsIgnoreCase("sun")) {
-                                entities.setVelocity(new Vector(0, 0, realisticWeather.windPushPower / 2));
-                            } else {
-                                entities.setVelocity(new Vector(0, 0, realisticWeather.windPushPower));
-                            }
-                        }
-                    }, 40, realisticWeather.windSpeed);
-                    break;
-                case "W":
-                    scheduler.scheduleSyncRepeatingTask(realisticWeather, () -> {
-                        for (Entity entities : world.getEntities()) {
-                            if (realisticWeather.weather.equalsIgnoreCase("sun")) {
-                                entities.setVelocity(new Vector(realisticWeather.windPushPower / 2, 0, 0));
-                            } else {
-                                entities.setVelocity(new Vector(realisticWeather.windPushPower, 0, 0));
-                            }
-                        }
-                    }, 40, realisticWeather.windSpeed);
-                    break;
-            }
-        }, 0, ThreadLocalRandom.current().nextInt(1200, 12000));
     }
 }
