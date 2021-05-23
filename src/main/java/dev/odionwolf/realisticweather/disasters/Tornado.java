@@ -1,16 +1,13 @@
 package dev.odionwolf.realisticweather.disasters;
 
 import dev.odionwolf.realisticweather.RealisticWeather;
-import dev.odionwolf.realisticweather.checks.WeatherCheck;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Tornado {
@@ -20,9 +17,6 @@ public class Tornado {
     public Tornado(RealisticWeather realisticWeather) {
         this.realisticWeather = realisticWeather;
     }
-
-    double publicCircleX;
-    double publicCircleZ;
 
     public static Boolean percentChance(double chance) {
         return (Math.random() <= chance);
@@ -38,9 +32,9 @@ public class Tornado {
         int disasterTimer = ThreadLocalRandom.current().nextInt(300, 900);
         int distanceFromPlayer = 30;
 
-        int max_height = 25;
+        int max_height = 20;
         double max_radius = 12;
-        float lines = 6;
+        float lines = 10;
         double height_increasement = 0.5;
         double radius_increasement = max_radius / max_height;
         final int[] angle = {0};
@@ -55,9 +49,9 @@ public class Tornado {
         int randomParticleY = world.getHighestBlockYAt(randomParticleX, randomParticleZ);
         Location particleLocation = new Location(world, randomParticleX, randomParticleY, randomParticleZ);
         Block particleBlock = particleLocation.subtract(0, 1, 0).getBlock();
-        Particle particle = Particle.BARRIER;
+        Particle particle = Particle.CLOUD;
         if (percentChance(1.0D) && (!particleBlock.getType().isAir())) {
-            BukkitTask tornadoCreator = new BukkitRunnable() { //currently unstoppable
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     if (counter[0] >= disasterTimer || realisticWeather.weather.equalsIgnoreCase("sun")) {
@@ -71,7 +65,23 @@ public class Tornado {
                             double mathLines = Math.toRadians(360 / lines * l + y * 25 - angle[0]);
                             double x = Math.cos(mathLines) * radius;
                             double z = Math.sin(mathLines) * radius;
-                            world.spawnParticle(particle, randomParticleX + x, randomParticleY+y, randomParticleZ + z, 1);
+                            world.spawnParticle(particle,
+                                    randomParticleX + x,
+                                    randomParticleY + y,
+                                    randomParticleZ + z,
+                                    0);
+                            angle[0]+=2;
+                            world.spawnParticle(particle,
+                                    randomParticleX + x,
+                                    randomParticleY + y,
+                                    randomParticleZ + z,
+                                    0);
+                            angle[0]+=2;
+                            world.spawnParticle(particle,
+                                    randomParticleX + x,
+                                    randomParticleY + y,
+                                    randomParticleZ + z,
+                                    0);
 
                         }
                     }
