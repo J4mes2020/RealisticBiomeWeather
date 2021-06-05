@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -29,12 +30,12 @@ public class Tornado {
 
     public void tornadoLayout(Player player) {
         World world = player.getWorld();
-        int disasterTimer = ThreadLocalRandom.current().nextInt(300, 900);
+        int disasterTimer = ThreadLocalRandom.current().nextInt(620, 1140);
         int distanceFromPlayer = 30;
 
-        int max_height = 20;
-        double max_radius = 12;
-        float lines = 10;
+        int max_height = 30;
+        double max_radius = 10;
+        float lines = 20;
         double height_increasement = 0.5;
         double radius_increasement = max_radius / max_height;
         final int[] angle = {0};
@@ -50,6 +51,7 @@ public class Tornado {
         Location particleLocation = new Location(world, randomParticleX, randomParticleY, randomParticleZ);
         Block particleBlock = particleLocation.subtract(0, 1, 0).getBlock();
         Particle particle = Particle.CLOUD;
+
         if (percentChance(1.0D) && (!particleBlock.getType().isAir())) {
             new BukkitRunnable() {
                 @Override
@@ -60,36 +62,32 @@ public class Tornado {
                     }
 
                     for (int l = 0; l < lines; l++) {
-                        for (double y = 0; y < max_height; y+=height_increasement ) {
-                            double radius = y * radius_increasement;
-                            double mathLines = Math.toRadians(360 / lines * l + y * 25 - angle[0]);
-                            double x = Math.cos(mathLines) * radius;
-                            double z = Math.sin(mathLines) * radius;
-                            world.spawnParticle(particle,
-                                    randomParticleX + x,
-                                    randomParticleY + y,
-                                    randomParticleZ + z,
-                                    0);
-                            angle[0]+=2;
-                            world.spawnParticle(particle,
-                                    randomParticleX + x,
-                                    randomParticleY + y,
-                                    randomParticleZ + z,
-                                    0);
-                            angle[0]+=2;
-                            world.spawnParticle(particle,
-                                    randomParticleX + x,
-                                    randomParticleY + y,
-                                    randomParticleZ + z,
-                                    0);
+                        for (double y = 0; y < max_height; y += height_increasement) {
+                                double radius = y * radius_increasement;
+                                double mathLines = Math.toRadians(360 / lines * l + y * 25 - angle[0]);
+                                double x = Math.cos(mathLines) * radius;
+                                double z = Math.sin(mathLines) * radius;
+                                world.spawnParticle(particle,
+                                        randomParticleX + x,
+                                        randomParticleY + y,
+                                        randomParticleZ + z,
+                                        0);
 
+                                world.spawnParticle(particle,
+                                        randomParticleX + x*5,
+                                        randomParticleY + max_height,
+                                        randomParticleZ + z*5,
+                                        0);
+
+                            }
                         }
-                    }
 
-                    angle[0]+=2;
+                    angle[0] += 4;
                     counter[0]++;
                 }
-            }.runTaskTimer(realisticWeather, 20, 4);
+
+            }.runTaskTimer(realisticWeather, 0, 6);
+
         }
     }
 }

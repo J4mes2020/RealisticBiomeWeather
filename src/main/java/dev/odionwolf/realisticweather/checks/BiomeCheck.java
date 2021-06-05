@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class BiomeCheck implements Listener {
 
@@ -36,9 +37,8 @@ public class BiomeCheck implements Listener {
             case DESERT:
             case DESERT_HILLS:
             case DESERT_LAKES:
-                for (PotionEffect effect : player.getActivePotionEffects()) {
-                    player.removePotionEffect(effect.getType());
-                }
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 1, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1000000, 0, false, false, false));
                 break;
                 //add more biomes
         }

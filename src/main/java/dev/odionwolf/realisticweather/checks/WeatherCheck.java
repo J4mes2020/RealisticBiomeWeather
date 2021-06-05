@@ -2,6 +2,7 @@ package dev.odionwolf.realisticweather.checks;
 
 import dev.odionwolf.realisticweather.RealisticWeather;
 import dev.odionwolf.realisticweather.disasters.Tornado;
+import dev.odionwolf.realisticweather.wind.WindGenerator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,11 +17,13 @@ public class WeatherCheck implements Listener {
 
     private final RealisticWeather realisticWeather;
     private final Tornado tornado;
+    private final WindGenerator windGenerator;
 
-    public WeatherCheck(RealisticWeather realisticWeather,  Tornado tornado) {
+    public WeatherCheck(RealisticWeather realisticWeather, Tornado tornado, WindGenerator windGenerator) {
         realisticWeather.getServer().getPluginManager().registerEvents(this, realisticWeather);
         this.realisticWeather = realisticWeather;
         this.tornado = tornado;
+        this.windGenerator = windGenerator;
     }
 
     public ArrayList<Player> playerInWorld = new ArrayList<>();
@@ -56,6 +59,8 @@ public class WeatherCheck implements Listener {
         player.removePotionEffect(PotionEffectType.UNLUCK);
         player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, 1000000, 0, true, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 1000000, 0, true, false, false));
+        windGenerator.windManager(player);
+
     }
 
     public void rainy(Player player) {
@@ -68,6 +73,8 @@ public class WeatherCheck implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0, true, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.UNLUCK, 1000000, 0, true, false, false));
         tornado.tornadoManager(player);
+        windGenerator.windManager(player);
+
     }
 
 }
