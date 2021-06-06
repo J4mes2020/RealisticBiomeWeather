@@ -1,6 +1,7 @@
 package dev.odionwolf.realisticweather.checks;
 
 import dev.odionwolf.realisticweather.RealisticWeather;
+import dev.odionwolf.realisticweather.disasters.SinkHole;
 import dev.odionwolf.realisticweather.disasters.Tornado;
 import dev.odionwolf.realisticweather.wind.WindGenerator;
 import org.bukkit.entity.Player;
@@ -18,12 +19,14 @@ public class WeatherCheck implements Listener {
     private final RealisticWeather realisticWeather;
     private final Tornado tornado;
     private final WindGenerator windGenerator;
+    private final SinkHole sinkHole;
 
-    public WeatherCheck(RealisticWeather realisticWeather, Tornado tornado, WindGenerator windGenerator) {
+    public WeatherCheck(RealisticWeather realisticWeather, Tornado tornado, WindGenerator windGenerator, SinkHole sinkHole) {
         realisticWeather.getServer().getPluginManager().registerEvents(this, realisticWeather);
         this.realisticWeather = realisticWeather;
         this.tornado = tornado;
         this.windGenerator = windGenerator;
+        this.sinkHole = sinkHole;
     }
 
     public ArrayList<Player> playerInWorld = new ArrayList<>();
@@ -47,7 +50,19 @@ public class WeatherCheck implements Listener {
     @EventHandler
     public void onThunderChange(ThunderChangeEvent event) {
         if (event.toThunderState()) {
+
+            for (Player player : playerInWorld) {
+                thunder(player);
+            }
+
         }
+    }
+
+    public void thunder(Player player) {
+        //player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 1, true, false, false));
+        //player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1000000, 0, true, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.UNLUCK, 1000000, 4, true, false, false));
+        sinkHole.sinkHoleManager(player);
     }
 
     public void sunny(Player player) {

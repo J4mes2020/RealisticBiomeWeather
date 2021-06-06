@@ -2,33 +2,29 @@ package dev.odionwolf.realisticweather;
 
 import dev.odionwolf.realisticweather.checks.BiomeCheck;
 import dev.odionwolf.realisticweather.checks.WeatherCheck;
-import dev.odionwolf.realisticweather.thirst.DrinkCheck;
+import dev.odionwolf.realisticweather.commands.WindCommand;
+import dev.odionwolf.realisticweather.disasters.SinkHole;
+import dev.odionwolf.realisticweather.thirst.ThirstManager;
 import dev.odionwolf.realisticweather.disasters.Tornado;
 import dev.odionwolf.realisticweather.wind.WindGenerator;
-import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
 public final class RealisticWeather extends JavaPlugin {
 
     WeatherCheck weatherCheck;
     Tornado tornado;
+    SinkHole sinkHole;
     WindGenerator windGenerator;
     public String weather = "sun";
-    private DrinkCheck drinkCheck;
+    private ThirstManager drinkCheck;
 
 
     private File customConfigBarFile;
@@ -63,21 +59,28 @@ public final class RealisticWeather extends JavaPlugin {
     public void onEnable() {
         createConfigBar();
         tornado = new Tornado(this);
+        sinkHole = new SinkHole(this);
+
         windGenerator = new WindGenerator(this);
-        weatherCheck = new WeatherCheck(this, tornado, windGenerator);
+        weatherCheck = new WeatherCheck(this, tornado, windGenerator, sinkHole);
         new BiomeCheck(this, weatherCheck);
-        drinkCheck = new DrinkCheck(this);
+        drinkCheck = new ThirstManager(this);
+        new WindCommand(this, windGenerator);
+
+
+        /*
         if (!(getConfigBar().getStringList("Information").isEmpty())) {
             Map<String, Object> thirstBarInfo = getConfigBar().getConfigurationSection("Information").getValues(false);
-
-
             for (Map.Entry<String, Object> thirstValues : thirstBarInfo.entrySet()) {
-                if (thirstValues.getValue() instanceof BossBar) {
-                    drinkCheck.thirstPlayerList.put(UUID.fromString(thirstValues.getKey()), (BossBar) thirstValues.getValue());
-                }
-            }
+                //if (thirstValues.getValue() instanceof BossBar) {
+                drinkCheck.thirstPlayerList.put(UUID.fromString(thirstValues.getKey()), (BossBar) thirstValues.getValue());
+            }// FIX SO IT REMEMBERS THEIR THIRST WHEN THE SERVER RESTARTS
+            System.out.println(drinkCheck.thirstPlayerList);
         }
     }
+             */
+    }
+
 
 
     @Override
@@ -85,7 +88,7 @@ public final class RealisticWeather extends JavaPlugin {
         for (Map.Entry<UUID, BossBar> thirstBarInfo : drinkCheck.thirstPlayerList.entrySet()) {
             UUID playerUUID = thirstBarInfo.getKey();
             BossBar bossBarValue = thirstBarInfo.getValue();
-            getConfigBar().set("Information." + playerUUID, bossBarValue);
+            //getConfigBar().set("Information." + playerUUID, bossBarValue);
 
             try {
                 saveConfigBar();

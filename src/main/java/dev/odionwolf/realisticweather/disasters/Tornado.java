@@ -7,7 +7,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -31,7 +30,7 @@ public class Tornado {
     public void tornadoLayout(Player player) {
         World world = player.getWorld();
         int disasterTimer = ThreadLocalRandom.current().nextInt(620, 1140);
-        int distanceFromPlayer = 30;
+        int distanceFromPlayer = 100;
 
         int max_height = 30;
         double max_radius = 10;
@@ -52,7 +51,7 @@ public class Tornado {
         Block particleBlock = particleLocation.subtract(0, 1, 0).getBlock();
         Particle particle = Particle.CLOUD;
 
-        if (percentChance(1.0D) && (!particleBlock.getType().isAir())) {
+        if (percentChance(0.05D) && (!particleBlock.getType().isAir())) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -80,7 +79,7 @@ public class Tornado {
                                         0);
 
                             }
-                        }
+                        }// ADD LIFTING BLOCKS AND SUCKING IN PLAYERS
 
                     angle[0] += 4;
                     counter[0]++;

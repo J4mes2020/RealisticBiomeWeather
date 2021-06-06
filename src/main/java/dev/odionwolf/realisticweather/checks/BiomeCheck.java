@@ -35,10 +35,7 @@ public class BiomeCheck implements Listener {
 
         switch (playerBiome) {
             case DESERT:
-            case DESERT_HILLS:
-            case DESERT_LAKES:
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 1, false, false, false));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1000000, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 0, false, false, false));
                 break;
                 //add more biomes
         }

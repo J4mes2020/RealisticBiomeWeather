@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class WindGenerator {
 
     private final RealisticWeather realisticWeather;
+    public boolean windDisabled = false;
 
     public WindGenerator(RealisticWeather realisticWeather) {
         this.realisticWeather = realisticWeather;
@@ -36,38 +37,34 @@ public class WindGenerator {
 
     public void windCreator(Player player) {
 
-        Collections.shuffle(windDirectionsList);
-        windDirectionsList.toArray(windDirections);
+        if (windDisabled) {
 
-        realisticWeather.getServer().getScheduler().scheduleSyncRepeatingTask(realisticWeather, () -> {
+            Collections.shuffle(windDirectionsList);
+            windDirectionsList.toArray(windDirections);
 
-            Vector playerVelocity = player.getVelocity();
-            switch (windDirections[0]) {
-                case "N":
-                    if (!player.isFlying()) {
-                        player.setVelocity(playerVelocity.add(new Vector(0, 0, -0.003)));
+            realisticWeather.getServer().getScheduler().scheduleSyncRepeatingTask(realisticWeather, () -> {
+
+                Vector playerVelocity = player.getVelocity();
+                if (!player.isFlying()) {
+                    switch (windDirections[0]) {
+                        case "N":
+                            player.setVelocity(playerVelocity.add(new Vector(0, 0, -0.003)));
+                            break;
+
+                        case "E":
+                            player.setVelocity(playerVelocity.add(new Vector(0.003, 0, 0)));
+                            break;
+
+                        case "S":
+                            player.setVelocity(playerVelocity.add(new Vector(0, 0, 0.003)));
+                            break;
+
+                        case "W":
+                            player.setVelocity(playerVelocity.add(new Vector(-0.003, 0, 0)));
+                            break;
                     }
-                    break;
-
-                case "E":
-                    if (!player.isFlying()) {
-                        player.setVelocity(playerVelocity.add(new Vector(0.003, 0, 0)));
-                    }
-                    break;
-
-                case "S":
-                    if (!player.isFlying()) {
-                        player.setVelocity(playerVelocity.add(new Vector(0, 0, 0.003)));
-                    }
-                    break;
-
-                case "W":
-                    if (!player.isFlying()) {
-                        player.setVelocity(playerVelocity.add(new Vector(-0.003, 0, 0)));
-                    }
-                    break;
-
-            }
-        }, 0, 20);
+                }
+            }, 0, 20);
+        }
     }
 }
